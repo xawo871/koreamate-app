@@ -32,16 +32,43 @@ class KrdictError(Exception):
     pass
 
 
+MOCK_DICTIONARY_DATA = {
+    "사랑": [
+        {"word": "사랑", "part_of_speech": "명사", "meaning": "cinta / kasih sayang"},
+        {"word": "사랑하다", "part_of_speech": "동사", "meaning": "mencintai / menyayangi"},
+    ],
+    "공부": [
+        {"word": "공부", "part_of_speech": "명사", "meaning": "belajar / studi"},
+        {"word": "공부하다", "part_of_speech": "동사", "meaning": "belajar"},
+    ],
+    "도시": [
+        {"word": "도시", "part_of_speech": "명사", "meaning": "kota / urban"},
+    ],
+    "학교": [
+        {"word": "학교", "part_of_speech": "명사", "meaning": "sekolah"},
+    ],
+    "한국어": [
+        {"word": "한국어", "part_of_speech": "명사", "meaning": "bahasa Korea"},
+    ],
+}
+
+
 async def fetch_krdict_data(query: str) -> list[dict[str, Any]]:
     api_key = os.getenv("KRDICT_API_KEY")
     base_url = os.getenv("KRDICT_BASE_URL")
     timeout_seconds = float(os.getenv("REQUEST_TIMEOUT_SECONDS", "15"))
 
     if not api_key or not base_url:
-        raise HTTPException(
-            status_code=500,
-            detail="Dictionary provider configuration is missing. Add KRDICT_API_KEY and KRDICT_BASE_URL in the server environment.",
-        )
+        normalized = query.strip().lower()
+        if normalized in MOCK_DICTIONARY_DATA:
+            return MOCK_DICTIONARY_DATA[normalized]
+        return [
+            {
+                "word": query,
+                "part_of_speech": "unknown",
+                "meaning": "Data mock fallback untuk pengembangan lokal. Hubungkan Krdict real di server environment bila perlu.",
+            }
+        ]
 
     headers = {
         "Accept": "application/json",
@@ -86,5 +113,5 @@ async def search_dictionary(q: str = Query(..., min_length=1)) -> DictionaryResu
     return DictionaryResult(
         query=q,
         entries=entries,
-        source="krdict",
+        source="krdict" if os.getenv("KRDICT_API_KEY") and os.getenv("KRDICT_BASE_URL") else "mock",
     )
