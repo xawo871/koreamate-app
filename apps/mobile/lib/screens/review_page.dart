@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'flashcard_page.dart';
+
 class ReviewPage extends StatelessWidget {
   const ReviewPage({super.key});
 

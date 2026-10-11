@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../screens/dictionary_page.dart';
-import '../screens/home_page.dart';
-import '../screens/onboarding_page.dart';
-import '../theme.dart';
+import 'screens/dictionary_page.dart';
+import 'screens/home_page.dart';
+import 'screens/onboarding_page.dart';
+import 'theme.dart';
 
 class RootShell extends StatefulWidget {
   const RootShell({super.key});
