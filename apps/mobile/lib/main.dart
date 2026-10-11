@@ -26,9 +26,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('KoreaMate'),
-      ),
+      appBar: AppBar(title: const Text('KoreaMate')),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -41,7 +39,7 @@ class HomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Learning app skeleton ready for MVP development.',
+              'Secure backend + dictionary integration scaffold.',
               textAlign: TextAlign.center,
             ),
           ],
