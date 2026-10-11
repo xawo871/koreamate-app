@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../services/learning_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LearningProgress {
   final int vocabularyCount;

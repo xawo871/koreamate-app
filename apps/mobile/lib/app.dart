@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'flashcard_page.dart';
-import 'progress_page.dart';
-import 'quiz_page.dart';
-import 'review_page.dart';
-import 'tutor_ai_page.dart';
+import 'screens/dictionary_page.dart';
+import 'screens/flashcard_page.dart';
+import 'screens/home_page.dart';
+import 'screens/onboarding_page.dart';
+import 'screens/progress_page.dart';
+import 'screens/quiz_page.dart';
+import 'screens/review_page.dart';
+import 'screens/tutor_ai_page.dart';
+import 'theme.dart';
 
 class RootShell extends StatefulWidget {
   const RootShell({super.key});
