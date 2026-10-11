@@ -1,75 +1,96 @@
 import 'package:flutter/material.dart';
 
-class ProgressPage extends StatelessWidget {
+import '../services/learning_storage.dart';
+
+class ProgressPage extends StatefulWidget {
   const ProgressPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final metrics = [
-      _MetricCard(label: 'Kosakata', value: '214', delta: '+18 minggu ini'),
-      _MetricCard(label: 'Streak', value: '12 hari', delta: 'Tinggi'),
-      _MetricCard(label: 'Review', value: '87%', delta: 'Berhasil'),
-    ];
+  State<ProgressPage> createState() => _ProgressPageState();
+}
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Progress'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Progress belajar',
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            GridView.count(
-              crossAxisCount: 3,
-              shrinkWrap: true,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              physics: const NeverScrollableScrollPhysics(),
-              children: metrics,
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Pencapaian minggu ini',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Membaca dasar', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-                  SizedBox(height: 8),
-                  Text('8/10 materi selesai'),
-                  SizedBox(height: 14),
-                  LinearProgressIndicator(
-                    value: 0.8,
-                    minHeight: 10,
+class _ProgressPageState extends State<ProgressPage> {
+  late Future<LearningProgress> _progressFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _progressFuture = LearningStorageService.loadProgress();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<LearningProgress>(
+      future: _progressFuture,
+      builder: (context, snapshot) {
+        final progress = snapshot.data ?? const LearningProgress();
+        final metrics = [
+          _MetricCard(label: 'Kosakata', value: '${progress.vocabularyCount}', delta: '+${progress.vocabularyCount} minggu ini'),
+          _MetricCard(label: 'Streak', value: '${progress.streakDays} hari', delta: 'Tinggi'),
+          _MetricCard(label: 'Review', value: '${progress.reviewRate}%', delta: 'Berhasil'),
+        ];
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Progress'),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Progress belajar',
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(height: 18),
-                  Text('Kosakata harian', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-                  SizedBox(height: 8),
-                  Text('18 kata baru hari ini'),
-                ],
-              ),
+                ),
+                const SizedBox(height: 20),
+                GridView.count(
+                  crossAxisCount: 3,
+                  shrinkWrap: true,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: metrics,
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'Pencapaian minggu ini',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Membaca dasar', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 8),
+                      Text('${progress.reviewRate}/100 poin review'),
+                      const SizedBox(height: 14),
+                      LinearProgressIndicator(
+                        value: (progress.reviewRate / 100).clamp(0.0, 1.0),
+                        minHeight: 10,
+                      ),
+                      const SizedBox(height: 18),
+                      const Text('Kosakata harian', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 8),
+                      Text('${progress.vocabularyCount} kata tersimpan dalam progress'),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

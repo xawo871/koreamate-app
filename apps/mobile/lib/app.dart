@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'screens/dictionary_page.dart';
-import 'screens/home_page.dart';
-import 'screens/onboarding_page.dart';
-import 'theme.dart';
+import 'flashcard_page.dart';
+import 'progress_page.dart';
+import 'quiz_page.dart';
+import 'review_page.dart';
+import 'tutor_ai_page.dart';
 
 class RootShell extends StatefulWidget {
   const RootShell({super.key});
@@ -18,7 +19,8 @@ class _RootShellState extends State<RootShell> {
   final List<Widget> _pages = const [
     HomePage(),
     DictionaryPage(),
-    Placeholder(),
+    ProgressPage(),
+    TutorAiPage(),
   ];
 
   @override
@@ -39,6 +41,7 @@ class _RootShellState extends State<RootShell> {
           NavigationDestination(icon: Icon(Icons.home_rounded), label: 'Home'),
           NavigationDestination(icon: Icon(Icons.menu_book_rounded), label: 'Kamus'),
           NavigationDestination(icon: Icon(Icons.analytics_rounded), label: 'Progress'),
+          NavigationDestination(icon: Icon(Icons.auto_awesome_rounded), label: 'AI'),
         ],
       ),
     );
@@ -58,6 +61,11 @@ class App extends StatelessWidget {
         'onboarding': (_) => const OnboardingPage(),
         'home': (_) => const RootShell(),
         'dictionary': (_) => const DictionaryPage(),
+        'review': (_) => const ReviewPage(),
+        'flashcard': (_) => const FlashcardPage(),
+        'quiz': (_) => const QuizPage(),
+        'progress': (_) => const ProgressPage(),
+        'tutor_ai': (_) => const TutorAiPage(),
       },
     );
   }

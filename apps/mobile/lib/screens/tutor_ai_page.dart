@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme.dart';
+
 class TutorAiPage extends StatelessWidget {
   const TutorAiPage({super.key});
 
@@ -42,7 +44,7 @@ class TutorAiPage extends StatelessWidget {
                   SizedBox(height: 8),
                   Text(
                     'Rekomendasi: ulang 5 kosakata yang paling sering muncul di review.',
-                    style: TextStyle(color: Color(0xFF6B7280)),
+                    style: TextStyle(color: AppTheme.muted),
                   ),
                 ],
               ),
@@ -64,7 +66,7 @@ class TutorAiPage extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.auto_awesome_rounded, color: Color(0xFF5B5BD6)),
+                    const Icon(Icons.auto_awesome_rounded, color: AppTheme.primary),
                     const SizedBox(width: 12),
                     Expanded(child: Text(item)),
                   ],

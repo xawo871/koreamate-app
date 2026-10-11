@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../services/learning_storage.dart';
+
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
 
@@ -43,7 +45,7 @@ class _QuizPageState extends State<QuizPage> {
     });
   }
 
-  void _nextQuestion() {
+  Future<void> _nextQuestion() async {
     if (_currentIndex < _questions.length - 1) {
       setState(() {
         _currentIndex += 1;
@@ -53,11 +55,18 @@ class _QuizPageState extends State<QuizPage> {
       return;
     }
 
+    final total = _questions.length;
+    await LearningStorageService.saveQuizResult(_score, total);
+    final reviewRate = ((_score / total) * 100).round();
+    await LearningStorageService.saveReviewRate(reviewRate);
+
+    if (!mounted) return;
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Selesai'),
-        content: Text('Skor kamu: $_score/${_questions.length}'),
+        content: Text('Skor kamu: $_score/$total'),
         actions: [
           TextButton(
             onPressed: () {
