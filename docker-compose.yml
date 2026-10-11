@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: koreamate-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      APP_ENV: development
+      APP_PORT: 8000
+      PYTHONUNBUFFERED: 1
+    volumes:
+      - ./backend:/app
+    restart: unless-stopped
+
+  mobile:
+    image: cirrusci/flutter:stable
+    container_name: koreamate-mobile
+    working_dir: /workspace/apps/mobile
+    volumes:
+      - .:/workspace
+    command: bash -lc "flutter pub get && flutter run -d web-server --web-hostname 0.0.0.0 --web-port 8080"
+    ports:
+      - "8080:8080"
+    environment:
+      FLUTTER_WEB_ENABLE_EXPERIMENTAL: 1
+    depends_on:
+      - backend
+

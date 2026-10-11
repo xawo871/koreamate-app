@@ -1,37 +1,31 @@
-# KoreaMate
+# KoreaMate Docker quick start
 
-KoreaMate is a premium Korean learning app with AI tutoring, vocabulary practice, OCR-based import, subscription management, and admin operations. This repository is the initial foundation for the project and follows the project blueprint defined in the product specification.
+This project can be run locally with Docker Compose.
 
-## Repository structure
+## Requirements
 
-- `apps/mobile` – Flutter app for Android and Web
-- `backend` – backend service and API stubs
-- `database` – schema and ERD notes
-- `docs` – product, security, and roadmap documents
-- `scripts` – automation and validation helpers
+- Docker
+- Docker Compose
 
-## Current phase
+## Start everything
 
-Phase 0: Foundation
+```bash
+docker-compose up --build
+```
 
-This repo sets up the project skeleton, developer guidance, and the baseline architecture for the upcoming MVP phases.
+## Stop everything
 
-## Core principles from the blueprint
+```bash
+docker-compose down
+```
 
-- Security and privacy are mandatory foundations.
-- AI features must be constrained by permissions and budget checks.
-- Data integrity and user isolation must be preserved.
-- Features must be built and verified incrementally.
-- Monetization and AI operations come after the learning app is stable.
+## Access the app
 
-## Recommended next steps
+- Backend: http://localhost:8000/health
+- Flutter Web app: http://localhost:8080
 
-1. Install Flutter SDK and open `apps/mobile` in a local environment or Codespace.
-2. Run `flutter pub get` and `flutter test` once the toolchain is installed.
-3. Implement the core onboarding, home, and dictionary flows.
-4. Build the backend contracts for auth, profiles, learning sessions, and progress.
-5. Move to Phase 1: MVP Learning App.
+## Notes
 
-## Status
-
-This repository currently contains the Phase 0 scaffold, not the full product implementation.
+- The backend uses a local mock fallback when Krdict credentials are not configured.
+- Keep real secrets in `.env` and never commit them to Git.
+- The app should still use the backend proxy model in production, even when the provider is eventually connected.
